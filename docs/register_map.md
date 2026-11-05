@@ -16,4 +16,4 @@ All offsets are byte offsets on a planned 32-bit memory-mapped interface. This t
 | `0x24` | `VERSION` | R | Register-interface/RTL version. |
 | `0x28` | `FAULT_CTRL` | R/W | Test-only fault selector; zero disables injection. |
 
-Planned arithmetic: `RESULT = ACCUMULATOR + Σ(sign_extend(A[i]) * sign_extend(B[i]))`, for lanes 0 through 3. Width, overflow, invalid-access, start-while-busy, and reset semantics must be finalized in the specification before coding the register block.
+Frozen arithmetic contract v1: `VECTOR_A` and `VECTOR_B` each pack four signed 8-bit lanes, with lane 0 in bits `[7:0]` and lane 3 in bits `[31:24]`. `RESULT = ACCUMULATOR + sum(A[i] * B[i])` for lanes 0 through 3. Each product is sign-extended before addition. The signed 32-bit result wraps on overflow using two's-complement arithmetic.
